@@ -6,6 +6,7 @@ import sqlite3
 from email.mime.text import MIMEText
 from cryptography.fernet import Fernet
 from argon2 import PasswordHasher
+from getpass import getpass  # Voeg getpass toe
 
 # Functie om een 2FA-code te genereren
 def generate_2fa_code():
@@ -57,7 +58,7 @@ def init_db():
 def add_password(conn, fernet):
     service = input("Voer de naam van de service in (bijv. Google): ")
     username = input("Voer je gebruikersnaam in: ")
-    password = input("Voer het wachtwoord in: ").encode()
+    password = getpass("Voer het wachtwoord in: ").encode()  # Gebruik getpass
 
     encrypted_password = fernet.encrypt(password)
     
@@ -96,7 +97,7 @@ def delete_password(conn):
         print(f"Wachtwoord voor {service} succesvol verwijderd.")
 
 # Stap 1: Vraag om het wachtwoord
-password = input("Voer je wachtwoord in: ").encode()
+password = getpass("Voer je wachtwoord in: ").encode()  # Gebruik getpass voor wachtwoord
 
 # Stap 2: Laad de encryptiesleutel
 with open('secret_enc.key', 'rb') as key_file:
