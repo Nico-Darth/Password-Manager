@@ -25,8 +25,8 @@ def generate_2fa_code():
 
 # Functie om e-mail te verzenden
 def send_email(subject, body, password):
-    sender_email = "niels.coert@gmail.com"
-    receiver_email = "niels.coert@gmail.com"
+    sender_email = "example@gmail.com"
+    receiver_email = "example@gmail.com"
 
     msg = MIMEText(body)
     msg["Subject"] = subject
