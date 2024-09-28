@@ -38,7 +38,7 @@ with open('password.hash', 'wb') as hash_file:
 # --------- Vaste wachtwoord encryptie ---------
 
 # Stap 8: Gebruik een vooraf gedefinieerd wachtwoord
-fixed_password = "tzuxzsvofozqosnw".encode()
+fixed_password = "xxxxxxxxx".encode()
 
 # Stap 9: Maak een encryptiesleutel
 encryption_key = Fernet.generate_key()
