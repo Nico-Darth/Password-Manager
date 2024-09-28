@@ -35,23 +35,44 @@ hashed_password = ph.hash(peppered_password.decode())  # Decodeer naar string
 with open('password.hash', 'wb') as hash_file:
     hash_file.write(hashed_password.encode())  # Encodeer naar bytes
 
-# Stap 8: Maak een encryptiesleutel en versleutel de .env bestand
+# --------- Vaste wachtwoord encryptie ---------
+
+# Stap 8: Gebruik een vooraf gedefinieerd wachtwoord
+fixed_password = "tzuxzsvofozqosnw".encode()
+
+# Stap 9: Maak een encryptiesleutel
 encryption_key = Fernet.generate_key()
 cipher = Fernet(encryption_key)
 
-# Stap 9: Schrijf de pepper en salt naar een .env bestand
+# Stap 10: Versleutel het vaste wachtwoord
+encrypted_fixed_password = cipher.encrypt(fixed_password)
+
+# Stap 11: Sla het versleutelde wachtwoord op in fixed_password.enc bestand
+with open('fixed_password.enc', 'wb') as fixed_enc_file:
+    fixed_enc_file.write(encrypted_fixed_password)  # Opslaan als bytes
+
+# Stap 12: Schrijf de pepper en salt naar een .env bestand
 with open('.env', 'w') as env_file:
     env_file.write(f'PEPPER={pepper_code}\n')
     env_file.write(f'SALT={salt.hex()}\n')  # Schrijf salt als hex
 
-# Stap 10: Versleutel de .env bestand
+# Stap 13: Versleutel de .env bestand
 encrypt_file('.env', encryption_key)
 
-# Stap 11: Bewaar de encryptiesleutel in een bestand
+# Stap 14: Bewaar de encryptiesleutel in een bestand
 with open('secret_enc.key', 'wb') as key_file:
     key_file.write(encryption_key)
 
-# Stap 12: Verwijder de originele .env file
+# Stap 15: Verwijder de originele .env file
 os.remove('.env')
 
+# Stap 16: Verwijder het script zelf
+script_path = __file__
+try:
+    os.remove(script_path)
+    print(f"Het script '{script_path}' is succesvol verwijderd.")
+except Exception as e:
+    print(f"Fout bij het verwijderen van het script: {e}")
+
 print("Het wachtwoord is gehasht en opgeslagen in password.hash.")
+print("Het vaste wachtwoord is versleuteld en opgeslagen in fixed_password.enc.")
